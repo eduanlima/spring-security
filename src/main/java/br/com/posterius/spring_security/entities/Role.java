@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @Entity
@@ -13,6 +14,18 @@ import lombok.Data;
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long roleId;
 	private String name;
+	
+	public enum Values{
+		ADMIN(1L),
+		BASIC(2L);
+		
+		@Getter
+		long roleId;
+		
+		Values(long roleId){
+			this.roleId = roleId;
+		}
+	}
 }

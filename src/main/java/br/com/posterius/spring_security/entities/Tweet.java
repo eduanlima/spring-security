@@ -17,7 +17,7 @@ import lombok.Data;
 public class Tweet {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private Long tweetId;
 	private Account account;
 	private String content;
 	@CreationTimestamp
