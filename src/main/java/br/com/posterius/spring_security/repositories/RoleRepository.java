@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.com.posterius.spring_security.entities.Role;
 
 @Repository
-public interface RoleRepostitory extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
 }
