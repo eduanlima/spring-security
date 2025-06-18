@@ -6,6 +6,7 @@ import java.security.interfaces.RSAPublicKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,32 +30,31 @@ public class SecurityConfig {
 	private RSAPublicKey publicKey;
 	@Value("${jwt.private.key}")
 	private RSAPrivateKey privateKey;
-	
+
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-			.csrf(csrf -> csrf.disable())
-			.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		
+		http.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/login").permitAll()
+				.anyRequest().authenticated()).csrf(csrf -> csrf.disable())
+				.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
 		return http.build();
 	}
 
-    @Bean
-    JwtDecoder jwtDecoder() {
+	@Bean
+	JwtDecoder jwtDecoder() {
 		return NimbusJwtDecoder.withPublicKey(publicKey).build();
 	}
-    
-    @Bean
-    JwtEncoder jwtEnconder() {
-    	JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(privateKey).build();
-    	var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-    	return new NimbusJwtEncoder(jwks);
-    }
-    
-    @Bean
-    BCryptPasswordEncoder bCryptPasswordEncoder() {
-    	return new BCryptPasswordEncoder();
-    }
+
+	@Bean
+	JwtEncoder jwtEnconder() {
+		JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(privateKey).build();
+		var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+		return new NimbusJwtEncoder(jwks);
+	}
+
+	@Bean
+	BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }
