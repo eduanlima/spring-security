@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @Entity
@@ -20,8 +19,7 @@ public class Role {
 	public enum Values{
 		ADMIN(1L),
 		BASIC(2L);
-		
-		@Getter
+
 		long roleId;
 		
 		Values(long roleId){

@@ -7,5 +7,5 @@ import br.com.posterius.spring_security.entities.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-	Role findById(String name);
+	Role findByName(String name);
 }

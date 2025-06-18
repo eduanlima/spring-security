@@ -10,5 +10,5 @@ import br.com.posterius.spring_security.entities.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID>{
-	Optional<Account> findByAccountName(String userName);
+	Optional<Account> findByName(String userName);
 }

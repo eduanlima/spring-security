@@ -28,8 +28,8 @@ public class AdminConfig implements CommandLineRunner {
 	@Transactional
 	@Override
 	public void run(String... args) throws Exception {
-		var roleAdmin = roleRepository.findById(Role.Values.ADMIN.name());
-		var accountAdmin = accountRepository.findByAccountName("admin");
+		var roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
+		var accountAdmin = accountRepository.findByName("admin");
 		
 		accountAdmin.ifPresentOrElse(a -> {
 			System.out.println("Account admin is present.");
