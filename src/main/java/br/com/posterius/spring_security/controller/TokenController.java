@@ -32,7 +32,7 @@ public class TokenController {
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
 		var account = accountRepository.findByName(loginRequest.userName());
 		
-		if (account.isEmpty() || account.get().isLoginCorrect(loginRequest, bCryptPasswordEncoder))
+		if (account.isEmpty() || !account.get().isLoginCorrect(loginRequest, bCryptPasswordEncoder))
 			throw new BadCredentialsException("User or password is invalid.");
 		
 		var now = Instant.now();
