@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.posterius.spring_security.dto.LoginRequest;
@@ -17,6 +18,7 @@ import br.com.posterius.spring_security.dto.LoginResponse;
 import br.com.posterius.spring_security.repositories.AccountRepository;
 
 @RestController
+@RequestMapping("/login")
 public class TokenController {
 	private final JwtEncoder jwtEncoder;
 	private final AccountRepository accountRepository;
@@ -28,7 +30,7 @@ public class TokenController {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
-	@PostMapping("/login")
+	@PostMapping
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
 		var account = accountRepository.findByName(loginRequest.userName());
 		
