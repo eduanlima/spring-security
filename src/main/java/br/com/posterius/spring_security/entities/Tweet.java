@@ -26,4 +26,9 @@ public class Tweet {
 	private String content;
 	@CreationTimestamp
 	private Instant creantionDate;
+	
+	public Tweet(Account account, String content) {
+		this.account = account;
+		this.content = content;
+	}
 }
