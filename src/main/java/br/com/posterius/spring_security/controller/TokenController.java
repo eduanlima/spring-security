@@ -1,6 +1,7 @@
 package br.com.posterius.spring_security.controller;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.posterius.spring_security.dto.LoginRequest;
 import br.com.posterius.spring_security.dto.LoginResponse;
+import br.com.posterius.spring_security.entities.Role;
 import br.com.posterius.spring_security.repositories.AccountRepository;
 
 @RestController
@@ -40,11 +42,14 @@ public class TokenController {
 		var now = Instant.now();
 		var expiresIn = 300L;
 		
+		var scopes = account.get().getRoles().stream().map(Role::getName).collect(Collectors.toList());
+		
 		var claims = JwtClaimsSet.builder()
 				.issuer("spring_security")
 				.subject(account.get().getAccountId().toString())
 				.issuedAt(now)
 				.expiresAt(now.plusSeconds(expiresIn))
+				.claim("scope", scopes)
 				.build();
 		
 		var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
