@@ -37,11 +37,11 @@ public class AccountController {
 	public ResponseEntity<Void> createAccount(@RequestBody CreateAccountDTO dto) {
 		var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
 
-		var accountFromDb = accountRepository.findByName(dto.name());
+		var accountFromDb = accountRepository.findByName(dto.userName());
 		if (accountFromDb.isPresent())
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
 
-		var account = new Account(dto.name(), bCryptPasswordEncoder.encode(dto.password()), Set.of(basicRole));
+		var account = new Account(dto.userName(), bCryptPasswordEncoder.encode(dto.password()), Set.of(basicRole));
 		accountRepository.save(account);
 
 		return ResponseEntity.ok().build();
